@@ -1,7 +1,6 @@
 package com.emil.mealmonitor.controller;
 
 import com.emil.mealmonitor.model.entity.Meal;
-import com.emil.mealmonitor.repository.MealRepository;
 import com.emil.mealmonitor.service.MealService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
