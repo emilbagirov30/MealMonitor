@@ -1,9 +1,9 @@
 package com.emil.mealmonitor.service;
 
+import com.emil.mealmonitor.exception.UserNotFoundException;
 import com.emil.mealmonitor.model.entity.User;
 import com.emil.mealmonitor.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,9 +14,9 @@ public class UserService {
           userRepository.save(user);
     }
 
-   public User getUser (Long id){
-       return userRepository.findById(id)
-               .map(ResponseEntity::ok)
-               .orElse(ResponseEntity.notFound().build()).getBody();
-   }
+    public User getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
 }

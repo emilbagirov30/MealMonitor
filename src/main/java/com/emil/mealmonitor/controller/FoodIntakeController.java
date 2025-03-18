@@ -5,6 +5,8 @@ import com.emil.mealmonitor.service.FoodIntakeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,11 +19,19 @@ public class FoodIntakeController {
         this.foodIntakeService = foodIntakeService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addFoodIntake(@Valid @RequestBody FoodIntake intake) {
-        foodIntakeService.addFoodIntake(intake);
-        return ResponseEntity.ok().build();
+    @PostMapping("/create")
+    public ResponseEntity<Map<String, Object>> addFoodIntake(@RequestBody Map<String, Object> request) {
+        Long userId = ((Number) request.get("userId")).longValue();
+        List<Long> mealIds = (List<Long>) request.get("mealIds");
+
+        FoodIntake intake = foodIntakeService.addFoodIntake(userId, mealIds);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "Food intake added successfully",
+                "foodIntakeId", intake.getId()
+        ));
     }
+
 
     @GetMapping("/daily-report/{userId}")
     public ResponseEntity<Map<String, Object>> getDailyReport(@PathVariable Long userId) {
